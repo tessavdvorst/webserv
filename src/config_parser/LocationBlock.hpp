@@ -3,13 +3,12 @@
 
 #include <iostream>
 #include <string>
-#include <map>
 #include "Block.hpp"
 #include "utils.hpp"
 
 class LocationBlock: public Block {
 	private:
-		std::string _path;
+		std::string		_path;
 
 	public:
 		LocationBlock();
@@ -19,9 +18,8 @@ class LocationBlock: public Block {
 
 		LocationBlock& operator=(const LocationBlock& that);
 		
-		void save_location(std::vector<std::string> content, int i);
-		// std::vector<std::string> get_directive(std::string directive);
-		std::string get_path(void) const;
+		void			save_location(std::vector<std::string> content, int i);
+		std::string		get_path(void) const;
 };
 
 #endif

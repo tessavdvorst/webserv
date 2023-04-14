@@ -1,30 +1,30 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-#include <cstring>
-#include <cstdlib>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <netdb.h>
-#include <netinet/ip.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <algorithm>
-#include <dirent.h>
-#include <iterator>
-#include <fstream>
-#include <cstddef>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/stat.h>
-#include <climits>
-#include <cstdio>
-#include "ConfigFile.hpp"
-#include "utils.hpp"
-#include "SocketMonitor.hpp"
-#include "Client.hpp"
-#include <exception>
+# include <cstring>
+# include <cstdlib>
+# include <sys/socket.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <netdb.h>
+# include <netinet/ip.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <algorithm>
+# include <dirent.h>
+# include <iterator>
+# include <fstream>
+# include <cstddef>
+# include <sys/select.h>
+# include <sys/time.h>
+# include <sys/stat.h>
+# include <climits>
+# include <cstdio>
+# include "ConfigFile.hpp"
+# include "utils.hpp"
+# include "SocketMonitor.hpp"
+# include "Client.hpp"
+# include <exception>
 
 #define BACKLOG 128
 
@@ -37,8 +37,6 @@ class Server {
 		int _listenFd;
 		struct sockaddr_in _serverAddress;
 		std::vector<ServerBlock*> _server_config;
-		// ServerBlock* _server_config;
-		// ServerBlock& _server_config;
 		Server();
 
 	public:
@@ -57,7 +55,6 @@ class Server {
 
 		int get_port(void);
 		int get_socketfd(void);
-		// ServerBlock* get_server_block(void);
 		std::vector<ServerBlock*>	get_server_blocks(void);
 		void						add_config(ServerBlock *config);
 };

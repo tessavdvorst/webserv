@@ -117,7 +117,6 @@ void Response::serve_config_error_page(Response::HTTPException &e)
 	this->_payload = get_file_data();
 }
 
-
 std::string Response::get_error_msg(std::string error_code)
 {
 	if (error_code == "404")

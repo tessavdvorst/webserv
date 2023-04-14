@@ -3,10 +3,7 @@
 
 // ============================= CONSTRUCTOR ===================================
 
-Request::Request() {
-	// this->_packet_header = new std::vector<char>();
-	// this->_packet_body = new std::vector<char>();
-}
+Request::Request() {}
 
 Request::Request(std::vector<char> header, std::vector<char> body,
 		std::vector<ServerBlock*> config)
@@ -15,10 +12,8 @@ Request::Request(std::vector<char> header, std::vector<char> body,
 	this->_packet_header.insert(this->_packet_header.end(), header.begin(), header.end());
 	this->_packet_body.erase(this->_packet_body.begin(), this->_packet_body.end());
 	this->_packet_body.insert(this->_packet_body.end(), body.begin(), body.end());
-
 	this->_config.erase(this->_config.begin(), this->_config.end());
 	this->_config.insert(this->_config.end(), config.begin(), config.end());
-//	this->_config = config;
 
 	parse_request();
 }
@@ -30,10 +25,7 @@ Request::Request(const Request& that)
 
 // ============================= DESTRUCTOR ===================================
 
-Request::~Request() {
-	// delete this->_packet_header;
-	// delete this->_packet_body;
-}
+Request::~Request() {}
 
 // ====================== ASSIGN OPERATOR OVERLOAD ============================
 
@@ -55,13 +47,7 @@ Request& Request::operator=(const Request& that)
 	this->_port = that._port;
 	this->_config.erase(this->_config.begin(), this->_config.end());
 	this->_config.insert(this->_config.end(), that._config.begin(), that._config.end());
-//	this->_config = that._config;
 	return (*this);
-}
-
-//for what is this needed?
-std::vector<char>::size_type Request::get_max_client_size_dummy() {
-	return (30000000);
 }
 
 std::string Request::url_decode(std::string in) {
@@ -122,7 +108,6 @@ void Request::parse_header(std::stringstream& in)
 		in.peek();
 	}
 
-	//This is for the directory listing so we can direct the client to the right port.
 	this->_port = "80";
 	if (this->_host.find(":") != std::string::npos) {
 		this->_port = this->_host.substr(this->_host.find(":") + 1);
@@ -133,8 +118,6 @@ void Request::parse_header(std::stringstream& in)
 void Request::parse_url(void)
 {
 	this->_decoded_url = url_decode(this->_url);
-
-	// TODO: redirections.
 	this->_local_url = this->get_directive("root")[0] + this->_decoded_url;
 	std::string return_code = "200";
 	std::string payload = "";

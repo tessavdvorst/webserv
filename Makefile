@@ -1,5 +1,5 @@
 NAME		= 		webserv
-CC			= 		c++
+CC			= 		c++ -std=c++98
 
 VPATH		=		src:\
 					src/utils: \

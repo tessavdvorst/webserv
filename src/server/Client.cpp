@@ -1,5 +1,7 @@
 #include "Client.hpp"
 
+// ============================= CONSTRUCTOR ===================================
+
 Client::Client(): _fd(0), _listener(0), _status(READY_TO_READ) {}
 
 Client::Client(int fd, int listener, Server* server): _fd(fd), _listener(listener),
@@ -10,10 +12,14 @@ Client::Client(const Client& that)
 	*this = that;
 }
 
+// ============================= DESTRUCTOR ===================================
+
 Client::~Client() {
 	if (this->_cgi)
 		delete this->_cgi;
 }
+
+// ====================== ASSIGN OPERATOR OVERLOAD ============================
 
 Client& Client::operator=(const Client& that)
 {
@@ -29,10 +35,7 @@ Client& Client::operator=(const Client& that)
 	return (*this);
 }
 
-void Client::update_status(ClientStatus newStatus)
-{
-	this->_status = newStatus;
-}
+// ============================= I/O OPERATIONS ==================================
 
 void Client::parse_request(void)
 {
@@ -110,16 +113,8 @@ void Client::read_header(int fd, bool is_cgi)
 		update_status(READING_HEADER);
 		bytes_received = recv(fd, buffer, 8192, 0);
 	}
-/*	if (bytes_received == 0) {
-		if (is_cgi) {
-			update_status(CGI_BODY);
-		} else {
-			update_status(HEADER_READ);
-		}
-		return ; // throw exception ??(close_and_remove(fd));
-	}
-	else*/ if (bytes_received < 0)
-		return ; // throw exception ??(close_and_remove(fd));
+	if (bytes_received < 0)
+		throw SocketMonitor::CloseFdException(fd);
 	buffer[bytes_received] = '\0';
 
 	if (is_cgi && process_cgi_buffer(buffer, bytes_received))
@@ -149,7 +144,7 @@ void Client::read_body(int fd, bool is_cgi)
 		}
 	}
 	else if (bytes_received < 0)
-		throw SocketMonitor::CloseFdException(fd); // throw exception ??(close_and_remove(fd));
+		throw SocketMonitor::CloseFdException(fd);
 	buffer[bytes_received] = '\0';
 
 	if (is_cgi) {
@@ -160,34 +155,42 @@ void Client::read_body(int fd, bool is_cgi)
 		this->_body.insert(this->_body.end(), buffer, &(buffer[bytes_received]));
 }
 
-int Client::get_fd(void) const
+// =================================== GETTERS ======================================
+
+int Client::get_fd(void) const { return (this->_fd); }
+
+int Client::get_listener(void) const { return (this->_listener); }
+
+ClientStatus Client::get_status(void) const { return (this->_status); }
+
+std::vector<char> Client::get_header(void) const { return (this->_header); }
+
+std::vector<char> Client::get_body(void) const { return (this->_body); }
+
+Response	Client::get_response(void) const { return (this->_response); }
+
+Request	Client::get_request(void) const { return (this->_request); }
+
+CGI	*Client::get_cgi(void) const { return (this->_cgi); }
+
+// =================================== SETTERS ======================================
+
+void	Client::set_body(std::vector<char> body) { this->_body = body; }
+
+void	Client::set_response_payload(std::string payload) {	this->_response.set_payload(payload); }
+
+void	Client::set_request_body(std::vector<char> body) {	this->_request.set_packet_body(body); }
+
+void	Client::set_response_headers(std::string headers) {	this->_response.set_headers(headers); }
+
+void Client::update_status(ClientStatus newStatus) { this->_status = newStatus; }
+
+void Client::erase_body(std::vector<char>::size_type len)
 {
-	return (this->_fd);
+	this->_body.erase(this->_body.begin(), this->_body.begin() + len);
 }
 
-int Client::get_listener(void) const
-{
-	return (this->_listener);
-}
-
-ClientStatus Client::get_status(void) const
-{
-	return (this->_status);
-}
-
-std::vector<char> Client::get_header(void) const
-{
-	return (this->_header);
-}
-
-std::vector<char> Client::get_body(void) const
-{
-	return (this->_body);
-}
-
-void	Client::set_body(std::vector<char> body) {
-	this->_body = body;
-}
+// =============================== PRINT FUNCTIONS ==================================
 
 void Client::print_header()
 {
@@ -201,33 +204,4 @@ void Client::print_body()
 	std::vector<char>::iterator it = this->_body.begin();
 	for (; it != this->_body.end(); it++)
 		std::cout << (*it);
-}
-
-Response	Client::get_response(void) const {
-	return (this->_response);
-}
-
-Request	Client::get_request(void) const {
-	return (this->_request);
-}
-
-void		Client::set_response_payload(std::string payload) {
-	this->_response.set_payload(payload);
-}
-
-void		Client::set_request_body(std::vector<char> body) {
-	this->_request.set_packet_body(body);
-}
-
-void		Client::set_response_headers(std::string headers) {
-	this->_response.set_headers(headers);
-}
-
-CGI	*Client::get_cgi(void) const {
-	return (this->_cgi);
-}
-
-void Client::erase_body(std::vector<char>::size_type len)
-{
-	this->_body.erase(this->_body.begin(), this->_body.begin() + len);
 }
