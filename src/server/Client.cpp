@@ -1,28 +1,18 @@
 #include "Client.hpp"
 
-Client::Client(): _fd(0), _listener(0), _status(READY_TO_READ) {
-	// this->_header = new std::vector<char>();
-}
+Client::Client(): _fd(0), _listener(0), _status(READY_TO_READ) {}
 
 Client::Client(int fd, int listener, Server* server): _fd(fd), _listener(listener),
-	_status(READY_TO_READ), _server(server) {
-	// this->_header = new std::vector<char>();
-}
+	_status(READY_TO_READ), _server(server) {}
 
 Client::Client(const Client& that)
 {
-	// this->_header = new std::vector<char>();
 	*this = that;
 }
 
 Client::~Client() {
-	// delete this->_header;
-	// if (this->_body)
-	// 	delete this->_body;
-//	logger.log(Logger::DEBUG) << "Client Destructor called";
 	if (this->_cgi)
 		delete this->_cgi;
-	// close(this->_fd);
 }
 
 Client& Client::operator=(const Client& that)
