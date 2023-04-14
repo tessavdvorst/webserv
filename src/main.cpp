@@ -60,14 +60,21 @@ void start_server(ConfigFile* config)
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
-		logger.log(Logger::ERROR) << "invalid amount of arguments"; 
-	else if (!check_extension(argv[1], ".config"))
+	std::string config_file;
+	if (argc > 2) {
+		logger.log(Logger::ERROR) << "invalid amount of arguments";
+		return (1);
+	} else if (argc == 1) {
+		config_file = "/Users/rrinia/dev/gopher++/config_files/gopher++.config";
+	} else {
+		config_file = std::string(argv[1]);
+    }
+	if (!check_extension(config_file, ".config"))
 		logger.log(Logger::ERROR) << "invalid file extension";
 	else
 	{
 		try {
-			ConfigFile configFile(argv[1]);
+			ConfigFile configFile(config_file);
 			std::cout << configFile; // print config file
 			start_server(&configFile);
 		} catch (const ConfigFile::InvalidSyntaxException &e) {
