@@ -123,7 +123,7 @@ std::vector<std::string> ServerBlock::get_directive(std::string directive, std::
 
 	try {
 		directives = this->get_location(url).get_directives();
-		if (directives.count(directive) > 0) // directive present in location list
+		if (directives.count(directive) > 0)
 			return (directives[directive]);
 		else
 			throw ServerBlock::NoLocationException();
@@ -131,7 +131,7 @@ std::vector<std::string> ServerBlock::get_directive(std::string directive, std::
 		directives = this->get_directives();
 	}
 
-	if (directives.count(directive) > 0) // directive present in server list
+	if (directives.count(directive) > 0)
 		return (directives[directive]);
 
 	std::vector<std::string> empty;

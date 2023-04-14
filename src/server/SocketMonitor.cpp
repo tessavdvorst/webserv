@@ -2,7 +2,6 @@
 #include "Logger.hpp"
 #include "LoggerStream.hpp"
 #include "Server.hpp"
-#include "Request.hpp"
 
 // ============================= CONSTRUCTOR ===================================
 
@@ -243,9 +242,9 @@ void SocketMonitor::accept_connection(int fd)
 		client = new Client(this->_servers.at(fd)->accept(), fd, this->_servers.at(fd));
 		this->_clients[client->get_fd()] = client;
 		add_fd(client->get_fd());
-	} catch (const std::exception &e) { //make custom exception
+	} catch (const std::exception &e) {
 		logger.log(Logger::ERROR) << e.what() << '\n';
-		close_and_remove(client->get_fd()); ///???
+		close_and_remove(client->get_fd());
 		delete client;
 	}
 }

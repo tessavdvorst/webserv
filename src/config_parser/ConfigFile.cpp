@@ -22,7 +22,6 @@
 
 ConfigFile::ConfigFile() {}
 
-// ConfigFile::ConfigFile(const ConfigFile& that) {}
 
 ConfigFile::ConfigFile(const std::string& fileName): _fileName(fileName)
 {
@@ -33,10 +32,6 @@ ConfigFile::ConfigFile(const std::string& fileName): _fileName(fileName)
 // ============================ DESTRUCTORS =================================
 
 ConfigFile::~ConfigFile() {}
-
-// ====================== ASSIGN OPERATOR OVERLOAD ============================
-
-// ConfigFile& ConfigFile::operator=(const ConfigFile& that) {}
 
 // ============================== PARSER ====================================
 

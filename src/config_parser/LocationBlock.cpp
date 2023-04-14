@@ -53,28 +53,4 @@ void LocationBlock::save_location(std::vector<std::string> content, int i)
 
 // =============================== GETTER =====================================
 
-
-// std::vector<std::string> LocationBlock::get_directive(std::string directive)
-// {
-// 	std::map<std::string, std::vector<std::string> > directives;
-	
-// 	try {
-// 		directives = this->get_location("/").get_directives();
-// 	} catch (ServerBlock::NoLocationException e) {
-// 		directives = this->get_directives();
-// 	}
-
-// 	if (directives.empty())
-// 		std::cout << "EMPTY\n";
-
-// 	if (directives.count(directive) > 0) { // directive present in list
-// 		std::cout << "Found " << directive << ": " << directives[directive][0] << "!" << std::endl;
-// 		return (directives[directive]);
-// 	} else
-// 		std::cout << "Missed directive!" << std::endl;
-	
-// 	std::vector<std::string> empty;
-// 	return (empty);
-// }
-
 std::string LocationBlock::get_path(void) const { return (this->_path); }
