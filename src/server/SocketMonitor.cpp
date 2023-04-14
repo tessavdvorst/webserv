@@ -59,8 +59,8 @@ void SocketMonitor::add_server_config(ServerBlock& server)
 		if ( (*it).second->get_port() == server.get_port())
 		{
 			ServerBlock* config = new ServerBlock();
-			config = &server;
-			(*it).second->get_server_blocks().push_back(config);
+			*config = server;
+			(*it).second->add_config(config);
 		}
 	}
 }

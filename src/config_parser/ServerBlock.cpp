@@ -5,7 +5,7 @@
 
 ServerBlock::ServerBlock(): Block(), _port(-1) {}
 
-ServerBlock::ServerBlock(const ServerBlock& that): Block(that)
+ServerBlock::ServerBlock(const ServerBlock& that)
 {
 	*this = that;
 }
@@ -18,6 +18,7 @@ ServerBlock::~ServerBlock() {}
 
 ServerBlock& ServerBlock::operator=(const ServerBlock& that)
 {
+	Block::operator =(that);
 	this->_port = that._port;
 	this->_server_name.erase(this->_server_name.begin(), this->_server_name.end());
 	this->_server_name.insert(this->_server_name.end(), that._server_name.begin(), that._server_name.end());
