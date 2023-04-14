@@ -1,22 +1,67 @@
-CXX			?=	/usr/bin/c++
-MAKE		?=	/usr/bin/make
-SRC_DIR		=	./src
-CFLAGS		+=	-Wall -Wextra -Werror -std=c++98 -pedantic -Iinclude
-OBJ			=	gopher++.o
-NAME		=	gopher++
+NAME		= 		webserv
+CC			= 		c++
 
-all			:	$(NAME)
+VPATH		=		src:\
+					src/utils: \
+					src/config_parser: \
+					src/server
 
-$(NAME)		:	$(OBJ)
-				$(CXX) $(CFLAGS) -o $(NAME) $(OBJ)
+SRC_FILES	=		main.cpp\
+					$(SERVER_FILES)\
+					$(UTILS_FILES)\
+					$(C_PARSER_FILES)
 
-clean		:
-				$(RM) -f $(OBJ)
+SERVER_FILES =		Server.cpp \
+					Client.cpp \
+					SocketMonitor.cpp \
+					Request.cpp \
+					Response.cpp \
+					CGI.cpp
 
-fclean		:	clean
-				$(RM) -f $(NAME)
+UTILS_FILES =		Logger.cpp \
+					LoggerStream.cpp \
 
-re			:	fclean all
+C_PARSER_FILES	=	ConfigFile.cpp \
+					Block.cpp \
+					ServerBlock.cpp \
+					LocationBlock.cpp \
+					utils.cpp
 
-%.o			:	$(SRC_DIR)/%.cpp
-				$(CXX) $(CFLAGS) -c $<
+OBJS_DIR 	= 		objs
+OBJS		= 		$(addprefix $(OBJS_DIR)/,$(SRC_FILES:.cpp=.o))
+DEPS		= 		$(OBJS:.o=.d)
+HEADER_FILES =		-Isrc/config_parser -Isrc/utils -Isrc/server
+
+ifdef DEBUG
+ CFLAGS = -Wextra -Wall -Werror -fsanitize=address -g
+else
+ CFLAGS = -Wextra -Wall -Werror -O3
+endif
+
+all:				$(NAME)
+
+$(NAME):			$(OBJS)
+					@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+					@echo "\033[0;32mCompilation completed!\033[0m"
+
+debug:
+					$(MAKE) DEBUG=1 all
+
+$(OBJS_DIR)/%.o:	%.cpp | $(OBJS_DIR)
+					@$(CC) $(CFLAGS) $(HEADER_FILES) -MMD -o $@ -c $<
+
+$(OBJS_DIR):
+					@mkdir -p $@
+	
+clean:
+					@rm -rf $(OBJS_DIR)
+					@echo "\033[0;31mCleaned!\033[0m"
+
+fclean:				clean
+					@rm -f $(NAME)
+
+re:					clean fclean all
+
+.PHONY:				all clean fclean re
+
+-include $(DEPS)

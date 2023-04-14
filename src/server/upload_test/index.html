@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>
+I am a useless form web application
+</title>
+</head>
+<body>
+<h1>This is a useless form web application!</h1>
+<h3>But first! Let's load the last image that people uploaded to the server...</h3>
+<img src="img/gopher++.png" />
+<h3>OK, enough sillyness, time for the form!</h3>
+<form method="POST" action="upload.php" enctype="multipart/form-data">
+	<label for="imgfile">Image file: </label>
+	<input type="file" id="imgfile" name="imgfile"><br />
+	<label for="other_data">Please leave a comment!</label>
+	<input type="text" id="other_data" name="other_data" value="I love GopherCorp!"><br />
+	<input name="submit" type="submit" value="Upload the image to GopherCorp!">
+</form>
+<h3>Clicking the button above will send your image and comment to upload.php</h3>
+</body>
+</html>
