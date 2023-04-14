@@ -16,7 +16,9 @@ Request::Request(std::vector<char> header, std::vector<char> body,
 	this->_packet_body.erase(this->_packet_body.begin(), this->_packet_body.end());
 	this->_packet_body.insert(this->_packet_body.end(), body.begin(), body.end());
 
-	this->_config = config;
+	this->_config.erase(this->_config.begin(), this->_config.end());
+	this->_config.insert(this->_config.end(), config.begin(), config.end());
+//	this->_config = config;
 
 	parse_request();
 }
@@ -51,7 +53,9 @@ Request& Request::operator=(const Request& that)
 	this->_host = that._host;
 	this->_content_type = that._content_type;
 	this->_port = that._port;
-	this->_config = that._config;
+	this->_config.erase(this->_config.begin(), this->_config.end());
+	this->_config.insert(this->_config.end(), that._config.begin(), that._config.end());
+//	this->_config = that._config;
 	return (*this);
 }
 
@@ -176,7 +180,9 @@ ServerBlock *Request::get_server(void) {
 			if (!default_server && (*server_name) == "_")
 				default_server = (*block);
 			if ((*server_name) == this->_host)
+			{
 				return (*block);
+			}
 		}
 	}
 	if (default_server)

@@ -58,7 +58,8 @@ class Server {
 		int get_port(void);
 		int get_socketfd(void);
 		// ServerBlock* get_server_block(void);
-		std::vector<ServerBlock*> get_server_blocks(void);
+		std::vector<ServerBlock*>	get_server_blocks(void);
+		void						add_config(ServerBlock *config);
 };
 
 #endif

@@ -83,3 +83,7 @@ std::vector<ServerBlock*> Server::get_server_blocks(void)
 {
 	return (this->_server_config);
 }
+
+void	Server::add_config(ServerBlock *config) {
+	this->_server_config.push_back(config);
+}

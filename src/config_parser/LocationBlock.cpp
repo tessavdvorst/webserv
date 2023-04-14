@@ -5,7 +5,7 @@
 
 LocationBlock::LocationBlock(): Block() {}
 
-LocationBlock::LocationBlock(const LocationBlock& that): Block(that)
+LocationBlock::LocationBlock(const LocationBlock& that)
 {
 	*this = that;
 }
@@ -20,6 +20,7 @@ LocationBlock::~LocationBlock() {}
 
 LocationBlock& LocationBlock::operator=(const LocationBlock& that)
 {
+	Block::operator =(that);
 	this->_path = that._path;
 	return (*this);
 }
