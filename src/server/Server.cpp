@@ -1,6 +1,7 @@
 #include "Server.hpp"
 #include "ServerBlock.hpp"
 #include "utils.hpp"
+#include <arpa/inet.h>
 
 // ============================= CONSTRUCTOR ===================================
 

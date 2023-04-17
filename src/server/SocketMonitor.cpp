@@ -242,7 +242,7 @@ void SocketMonitor::accept_connection(int fd)
 		client = new Client(this->_servers.at(fd)->accept(), fd, this->_servers.at(fd));
 		this->_clients[client->get_fd()] = client;
 		add_fd(client->get_fd());
-		Logger::log(Logger::INFO) << "accepted client [" << client->get_fd() << "] at " << client->get_ip();
+		Logger::log(Logger::INFO) << "accepted client at " << client->get_ip() << "\n";
 	} catch (const std::exception &e) {
 		Logger::log(Logger::ERROR) << e.what() << '\n';
 		close_and_remove(client->get_fd());

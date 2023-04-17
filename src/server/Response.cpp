@@ -1,4 +1,5 @@
 #include "Response.hpp"
+#include <ftw.h>
 
 // ============================= CONSTRUCTOR ===================================
 
@@ -72,6 +73,14 @@ RequestType Response::check_request_type(void)
 	return (GET);
 }
 
+static int unlink_subthing(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+{
+	(void)sb;
+	(void)typeflag;
+	(void)ftwbuf;
+	return (remove(fpath));
+}
+
 void Response::handle_request(void) {
 
 	if (this->_request_type == NOT_ALLOWED)
@@ -81,15 +90,20 @@ void Response::handle_request(void) {
 	else if (this->_request_type == DELETE) {
 		if (this->_infile.good()) {
 			this->_infile.close();
-			if (remove(this->_index_url.c_str()))
+			if (remove(this->_index_url.c_str())) {
 				throw Response::HTTPException("500");
+			}
 			else
 				this->_payload = "<!doctype html><html><head><title>Successfully removed</title></head><body><h1>200</h1>The file you requested has been successfully deleted.</body></html>";
 		} else {
 			struct stat s;
-			if (stat(this->_index_url.c_str(), &s) == 0)
-				throw Response::HTTPException("500");
-			else {
+			if (stat(this->_request.get_local_url().c_str(), &s) == 0)
+			{
+				if (nftw(this->_request.get_local_url().c_str(), unlink_subthing, 64, FTW_DEPTH | FTW_PHYS)) {
+					throw Response::HTTPException("500");
+				}
+				this->_payload = "<!doctype html><html><head><title>Successfully removed</title></head><body><h1>200</h1>The file you requested has been successfully deleted.</body></html>";
+			} else {
 				if (errno == EACCES)
 					throw Response::HTTPException("403");
 				else if (errno == ENOENT || errno ==  ENOTDIR)
