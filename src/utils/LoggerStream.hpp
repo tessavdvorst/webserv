@@ -7,19 +7,18 @@
 class LoggerStream {
     private:
         friend class Logger;
-        LoggerStream(Logger& logger, Logger::LogLevel level);
+        LoggerStream(Logger::LogLevel level);
 		LoggerStream(const LoggerStream& that);
 
-        Logger& logger;
-        Logger::LogLevel level;
-        std::ostringstream stream;
+        Logger::LogLevel _level;
+        std::ostringstream _stream;
     
 	public:
 		~LoggerStream();
 
         template<typename T>
         LoggerStream& operator<<(const T& value) {
-            stream << value;
+            this->_stream << value;
             return (*this);
         }
 

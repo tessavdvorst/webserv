@@ -11,7 +11,7 @@ Logger::~Logger() {}
 
 // ============================== LOGGING ======================================
 
-LoggerStream Logger::log(const LogLevel log) { return (LoggerStream(*this, log)); }
+LoggerStream Logger::log(const LogLevel log) { return (LoggerStream(log)); }
 
 void Logger::print(const LogLevel log, const std::string msg)
 {

@@ -8,17 +8,15 @@
 # include <cstring>
 # include "LoggerStream.hpp"
 
-extern Logger logger;
-
 template <typename T>
 T error_and_return(std::string errorMsg, T returnVal) {
-	logger.log(Logger::ERROR) << errorMsg;
+	Logger::log(Logger::ERROR) << errorMsg;
 	return (returnVal);
 }
 
 template <typename T>
 T config_error_and_return(std::string errorMsg, int index, T returnVal) {
-	logger.log(Logger::ERROR) << errorMsg << " at line " << index + 1;
+	Logger::log(Logger::ERROR) << errorMsg << " at line " << index + 1;
 	return (returnVal);
 }
 

@@ -110,7 +110,7 @@ void Block::save_directive(const std::string& line, int i)
 		if (directive == "root" || !replace_dup_direc(std::make_pair(directive, args)))
 			throw ConfigFile::InvalidSyntaxException(i, ConfigFile::DUPLICATE_DIRECTIVE);
 		else
-			logger.log(Logger::WARN) << "duplicate directive at line " << i + 1;
+			Logger::log(Logger::WARN) << "duplicate directive at line " << i + 1;
 	}
 }
 

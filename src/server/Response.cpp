@@ -8,7 +8,7 @@ Response::Response(Request request)
 {
 	this->_request = request;
 	this->_index_url = this->_request.get_index_url();
-	this->_infile.open(this->_index_url.c_str(), std::ios::in | std::ios::binary | std::ios::ate/* | O_NONBLOCK*/ ); // O_NONBLOCK gets rejected by GCC because of a type mismatch
+	this->_infile.open(this->_index_url.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
 	this->_need_cgi = false;
 	this->_request_type = check_request_type();
 	try {
@@ -77,12 +77,12 @@ void Response::handle_request(void) {
 	if (this->_request_type == NOT_ALLOWED)
 		throw Response::HTTPException("405");
 	else if (this->_request.get_directive("return").size() != 1)
-		throw Response::HTTPException(this->_request.get_directive("return")[0], this->_request.get_directive("return")[1]);	// } else if (this->_request.get_method() == "DELETE" && std::find(allowed_methods.begin(), allowed_methods.end(), "DELETE") != allowed_methods.end()) {
+		throw Response::HTTPException(this->_request.get_directive("return")[0], this->_request.get_directive("return")[1]);
 	else if (this->_request_type == DELETE) {
 		if (this->_infile.good()) {
 			this->_infile.close();
 			if (remove(this->_index_url.c_str()))
-				throw Response::HTTPException("500"); // maybe be more explicit about why it failed?
+				throw Response::HTTPException("500");
 			else
 				this->_payload = "<!doctype html><html><head><title>Successfully removed</title></head><body><h1>200</h1>The file you requested has been successfully deleted.</body></html>";
 		} else
@@ -108,7 +108,7 @@ void Response::serve_config_error_page(Response::HTTPException &e)
 		throw Response::HTTPException(e.get_error_code(), false);
 	if (this->_infile.good())
 		this->_infile.close();
-	this->_infile.open(this->_request.get_directive(std::string("error_page") + e.get_error_code())[0].c_str(), std::ios::in | std::ios::binary | std::ios::ate /* | O_NONBLOCK */ ); // O_NONBLOCK rejected by GCC
+	this->_infile.open(this->_request.get_directive(std::string("error_page") + e.get_error_code())[0].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
 	if (!this->_infile.good())
 		throw Response::HTTPException(e.get_error_code(), false);
 	
@@ -141,7 +141,7 @@ void Response::handle_error_pages(Response::HTTPException &e)
 		error_code = "500";
 	std::string error_msg = get_error_msg(error_code);
 	this->_headers = "HTTP/1.1 " + error_code + " OK\r\ntransfer-encoding: chunked\r\n\r\n";
-	this->_payload = "<!doctype html>\r\n<html>\r\n<head>\r\n<title>Error " + error_code + "</title>\r\n</head><body><h1>" + error_code + "</h1>\r\n<br />\r\n<p>" + error_msg + "</p>\r\n</body>\r\n</html>";
+	this->_payload = "<!doctype html>\r\n<html>\r\n<head>\r\n<title>Error " + error_code + "</title>\r\n</head><body><h1>" + error_code + "</h1>\r\n<br/>\r\n<p>" + error_msg + "</p>\r\n</body>\r\n</html>";
 }
 
 // =========================== SERVE DIRECTORY LISTING =================================

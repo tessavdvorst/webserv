@@ -47,5 +47,5 @@ void error_and_close(std::string errorMsg, int socket)
 {
 	if (socket >= 0)
 		close(socket);
-	logger.log(Logger::ERROR) << errorMsg << '\n';
+	Logger::log(Logger::ERROR) << errorMsg << '\n';
 }

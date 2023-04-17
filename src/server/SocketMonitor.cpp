@@ -154,7 +154,7 @@ void SocketMonitor::handle_cgi(Client *client)
 		if (client->get_request().get_directive("client_max_body_size")[0].length() && client->get_body().size() > static_cast<unsigned long>(strtol(client->get_request().get_directive("client_max_body_size")[0].c_str(), NULL, 10))) {
 			close_and_remove(client->get_cgi()->get_output_read_fd());
 			client->set_response_headers("HTTP/1.1 413 Payload too large\r\ntransfer-encoding: chunked\r\n\r\n");
-			client->set_response_payload("<!doctype html>\r\n<html>\r\n<head>\r\n<title>Error 413</title>\r\n</head><body><h1>413</h1>\r\n<br />\r\n<p>The request you made was too large for this server.</p>\r\n</body>\r\n</html>");
+			client->set_response_payload("<!doctype html>\r\n<html>\r\n<head>\r\n<title>Error 413</title>\r\n</head><body><h1>413</h1>\r\n<br/>\r\n<p>The request you made was too large for this server.</p>\r\n</body>\r\n</html>");
 			client->update_status(READY_TO_SEND);
 		}
 	}
@@ -243,7 +243,7 @@ void SocketMonitor::accept_connection(int fd)
 		this->_clients[client->get_fd()] = client;
 		add_fd(client->get_fd());
 	} catch (const std::exception &e) {
-		logger.log(Logger::ERROR) << e.what() << '\n';
+		Logger::log(Logger::ERROR) << e.what() << '\n';
 		close_and_remove(client->get_fd());
 		delete client;
 	}
