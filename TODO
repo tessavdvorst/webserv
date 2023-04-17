@@ -1,7 +1,7 @@
 (x) if directory not found in autoindex -> wrong status code (500 instead of 404)
-(x) are the locations correctly chosen? TEST!
+(x) are the locations correctly choosen? TEST!
 (x) CGI file extension must be matched at end of URL
 (x) move files to master branch
 (/) more tests
-( ) big cleanup time
+(x) big cleanup time
 (x) default config file

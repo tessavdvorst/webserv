@@ -2,6 +2,8 @@
 #include "ServerBlock.hpp"
 #include "utils.hpp"
 
+// ============================= CONSTRUCTOR ===================================
+
 Server::Server() {}
 
 Server::Server(ServerBlock& server): _port(server.get_port()), _listenFd(-1)
@@ -12,13 +14,14 @@ Server::Server(ServerBlock& server): _port(server.get_port()), _listenFd(-1)
 
 	set_address();
 	if ((this->_listenFd = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-		error_and_close("failed to create socket for server!", -1); // throw error
+		error_and_close("failed to create socket for server!", -1);
 	fcntl(this->_listenFd, F_SETFL, O_NONBLOCK);
 
 	if (setsockopt(this->_listenFd, SOL_SOCKET, SO_REUSEADDR, &optValReuseAddress, sizeof(optValReuseAddress)) < 0)
-		error_and_close("failed to set SO_REUSEADDR option!", this->_listenFd); // throw error
+		error_and_close("failed to set SO_REUSEADDR option!", this->_listenFd);
 }
 
+// ================================ DESTRUCTOR =====================================
 
 Server::~Server()
 {
@@ -33,6 +36,8 @@ void Server::set_address(void)
 	this->_serverAddress.sin_port = htons(this->_server_config[0]->get_port());
 	this->_serverAddress.sin_addr.s_addr = INADDR_ANY;
 }
+
+// ============================ SOCKET METHODS =================================
 
 void Server::bind(void)
 {
@@ -66,23 +71,15 @@ int Server::accept(void)
 	return (clientFd);
 }
 
+// ================================== GETTERS ===========================================
 
-//GETTERS
+int Server::get_port(void) { return (this->_port); }
 
-int Server::get_port(void)
-{
-	return (this->_port);
-}
+int Server::get_socketfd(void) { return (this->_listenFd); }
 
-int Server::get_socketfd(void)
-{
-	return (this->_listenFd);
-}
+std::vector<ServerBlock*> Server::get_server_blocks(void) { return (this->_server_config); }
 
-std::vector<ServerBlock*> Server::get_server_blocks(void)
-{
-	return (this->_server_config);
-}
+// ================================== GETTERS ===========================================
 
 void	Server::add_config(ServerBlock *config) {
 	this->_server_config.push_back(config);

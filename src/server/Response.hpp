@@ -52,27 +52,24 @@ class Response {
 				HTTPException(std::string http_error, std::string redir_target, bool is_soft_error) : _http_error(http_error), _redir_target(redir_target), _is_soft_error(is_soft_error) {}
 				~HTTPException() _NOEXCEPT {}
 				
-				bool 		is_soft(void) const { return (this->_is_soft_error); }
+				bool		is_soft(void) const { return (this->_is_soft_error); }
 				std::string	get_error_code(void) const { return (this->_http_error); }
 				std::string	get_target(void) const { return (this->_redir_target); }
 		};
 		
-		RequestType check_request_type(void);
-		void		handle_request(void);
-		void		handle_error_pages(Response::HTTPException &e);
-		void		serve_config_error_page(Response::HTTPException &e);
-		std::string get_error_msg(std::string error_code);
-		void		serve_directory_listing(void);
-
-		bool		need_cgi(void);
-
-		std::string get_file_data(void);
-		std::string	get_payload(void);
-		std::string	get_headers(void);
-		RequestType get_request_type(void);
-
-		void		set_payload(std::string payload);
-		void		set_headers(std::string headers);
+		RequestType		check_request_type(void);
+		void			handle_request(void);
+		void			handle_error_pages(Response::HTTPException &e);
+		void			serve_config_error_page(Response::HTTPException &e);
+		std::string		get_error_msg(std::string error_code);
+		void			serve_directory_listing(void);
+		bool			need_cgi(void);
+		std::string		get_file_data(void);
+		std::string		get_payload(void);
+		std::string		get_headers(void);
+		RequestType		get_request_type(void);
+		void			set_payload(std::string payload);
+		void			set_headers(std::string headers);
 };
 
 #endif

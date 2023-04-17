@@ -35,16 +35,15 @@ class CGI;
 
 class Client {
 	private:
-		int _fd;
-		int _listener;
-		ClientStatus _status;
-		std::vector<char> _header;
-		std::vector<char> _body;
-
-		Server* _server;
-		Request _request;
-		Response _response;
-		CGI *_cgi;
+		int						_fd;
+		int						_listener;
+		ClientStatus			_status;
+		std::vector<char>		_header;
+		std::vector<char>		_body;
+		Server*					_server;
+		Request					_request;
+		Response				_response;
+		CGI*					_cgi;
 
 	public:
 		Client();
@@ -54,31 +53,28 @@ class Client {
 
 		Client& operator=(const Client& that);
 
-		void update_status(ClientStatus newStatus);
-		void parse_request(void);
-		void generate_response(void);
-		bool process_buffer(char *buffer, int bytes_read);
-		bool process_cgi_buffer(char *buffer, int bytes_read);
-		void read_header(int fd, bool is_cgi);
-		void read_body(int fd, bool is_cgi);
-
-		int get_fd(void) const;
-		int get_listener(void) const;
-		ClientStatus get_status(void) const;
-		std::vector<char> get_header(void) const;
-		std::vector<char> get_body(void) const;
-		void set_body(std::vector<char> body);
-
-		void print_header();
-		void print_body();
-		Response	get_response(void) const;
-		Request		get_request(void) const;
-		void		set_request_body(std::vector<char> body);
-		void		set_response_payload(std::string payload);
-		void		set_response_headers(std::string headers);
-		CGI			*get_cgi(void) const;
-
-		void 		erase_body(std::vector<char>::size_type len);
+		void				update_status(ClientStatus newStatus);
+		void				parse_request(void);
+		void				generate_response(void);
+		bool				process_buffer(char *buffer, int bytes_read);
+		bool				process_cgi_buffer(char *buffer, int bytes_read);
+		void				read_header(int fd, bool is_cgi);
+		void				read_body(int fd, bool is_cgi);
+		int					get_fd(void) const;
+		int					get_listener(void) const;
+		ClientStatus		get_status(void) const;
+		std::vector<char>	get_header(void) const;
+		std::vector<char>	get_body(void) const;
+		void				set_body(std::vector<char> body);
+		void				print_header();
+		void				print_body();
+		Response			get_response(void) const;
+		Request				get_request(void) const;
+		void				set_request_body(std::vector<char> body);
+		void				set_response_payload(std::string payload);
+		void				set_response_headers(std::string headers);
+		CGI					*get_cgi(void) const;
+		void				erase_body(std::vector<char>::size_type len);
 };
 
 #endif

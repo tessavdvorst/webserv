@@ -20,11 +20,11 @@ class CGI {
 		std::vector<char>	_header;
 		std::vector<char>	_body;
 
-		Request _request;
-		Response _response;
+		Request				_request;
+		Response			_response;
 
 	public:
-		CGI(); // Here because we can't construct a Client if we don't have it.
+		CGI();
 		CGI(Request request, Response response);
 		CGI(const CGI& that);
 		~CGI();
