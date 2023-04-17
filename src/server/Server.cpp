@@ -75,6 +75,8 @@ int Server::accept(void)
 
 int Server::get_port(void) { return (this->_port); }
 
+std::string Server::get_ip(void) { return (this->_server_config[0]->get_ip()); }
+
 int Server::get_socketfd(void) { return (this->_listenFd); }
 
 std::vector<ServerBlock*> Server::get_server_blocks(void) { return (this->_server_config); }

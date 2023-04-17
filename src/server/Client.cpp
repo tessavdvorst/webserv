@@ -159,6 +159,8 @@ void Client::read_body(int fd, bool is_cgi)
 
 int Client::get_fd(void) const { return (this->_fd); }
 
+std::string Client::get_ip(void) { return (this->_server->get_ip());}
+
 int Client::get_listener(void) const { return (this->_listener); }
 
 ClientStatus Client::get_status(void) const { return (this->_status); }

@@ -33,10 +33,10 @@ class Client;
 
 class Server {
 	private:
-		int _port;
-		int _listenFd;
-		struct sockaddr_in _serverAddress;
-		std::vector<ServerBlock*> _server_config;
+		int							_port;
+		int							_listenFd;
+		struct sockaddr_in			_serverAddress;
+		std::vector<ServerBlock*>	_server_config;
 		Server();
 
 	public:
@@ -48,13 +48,14 @@ class Server {
 				const char* what() const throw() { return ("failed to bind on the same port"); };
 		};
 
-		void set_address(void);
-		void bind(void);
-		void listen(void);
-		int accept(void);
+		void						set_address(void);
+		void						bind(void);
+		void						listen(void);
+		int							accept(void);
 
-		int get_port(void);
-		int get_socketfd(void);
+		int							get_port(void);
+		std::string					get_ip(void);
+		int							get_socketfd(void);
 		std::vector<ServerBlock*>	get_server_blocks(void);
 		void						add_config(ServerBlock *config);
 };

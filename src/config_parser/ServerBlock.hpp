@@ -10,9 +10,10 @@
 
 class ServerBlock: public Block {
 	private:
-		int _port;
-		std::vector<std::string> _server_name;
-		std::vector<LocationBlock> _locationBlock;
+		int							_port;
+		std::string					_ip;
+		std::vector<std::string>	_server_name;
+		std::vector<LocationBlock>	_locationBlock;
 
 	public:
 		ServerBlock();
@@ -26,19 +27,20 @@ class ServerBlock: public Block {
 				const char *what() const _NOEXCEPT { return ("No such location!"); }
 		};
 
-		void save_location(std::vector<std::string> content, int i);
-		void print_location(void) const;
+		void						save_location(std::vector<std::string> content, int i);
+		void						print_location(void) const;
 
-		int convert_port(const char* input);
-		void save_port(const std::string& line, int index);
-		void save_server_name(const std::string& line, int index);
+		int							convert_port(const char* input);
+		void						save_listen(const std::string& line, int index);
+		void						save_server_name(const std::string& line, int index);
 
-		int get_port(void) const;
-		std::vector<std::string> get_server_name(void);
-		std::vector<LocationBlock> get_locations(void) const;
+		int							get_port(void) const;
+		std::string					get_ip(void) const;
+		std::vector<std::string>	get_server_name(void);
+		std::vector<LocationBlock>	get_locations(void) const;
 
-		std::vector<std::string> get_directive(std::string directive, std::string url);
-		LocationBlock get_location(std::string url);
+		std::vector<std::string>	get_directive(std::string directive, std::string url);
+		LocationBlock				get_location(std::string url);
 };
 
 std::ostream& operator<<(std::ostream& output, ServerBlock& server);
