@@ -40,9 +40,10 @@ int Block::get_first_direc_pos(const std::vector<std::string>& config, int curre
 
 int Block::get_type_index(const std::string& str)
 {
-	std::string types[] = {"listen", "server_name", "root", "deny",\
-							"index", "error_page404", "error_page405", "error_page500", "client_max_body_size", \
-							"autoindex", "return", "allowed_methods", "redirect", "cgi_pass"};
+	std::string types[] = 	{	"listen", "server_name", "root", "index", "error_page404", \
+								"error_page405", "error_page500", "client_max_body_size", \
+								"autoindex", "return", "allowed_methods", "redirect", "cgi_pass"
+							};
 	int size = sizeof(types)/sizeof(types[0]);
 
 	for (int index = 0; index < size; index++)
