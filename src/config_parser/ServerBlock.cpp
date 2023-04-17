@@ -20,6 +20,7 @@ ServerBlock& ServerBlock::operator=(const ServerBlock& that)
 {
 	Block::operator =(that);
 	this->_port = that._port;
+	this->_ip = that._ip;
 	this->_server_name.erase(this->_server_name.begin(), this->_server_name.end());
 	this->_server_name.insert(this->_server_name.end(), that._server_name.begin(), that._server_name.end());
 	this->_locationBlock.erase(this->_locationBlock.begin(), this->_locationBlock.end());
@@ -54,22 +55,28 @@ int ServerBlock::convert_port(const char* input)
 	return (static_cast<int>(val));
 }
 
-void ServerBlock::save_port(const std::string& line, int index)
+void ServerBlock::save_listen(const std::string& line, int index)
 {
-	if (line.find_first_of(" ") == std::string::npos)
+	if (line.find_first_of(" ") == std::string::npos
+		|| std::count(line.begin(), line.end(), ' ') < 2)
 		throw ConfigFile::InvalidSyntaxException(index, ConfigFile::INVALID_VALUES);
 
 	int value;
-	std::string arg;
+	std::string ip_arg;
+	std::string port_arg;
 	std::string directive;
 	std::istringstream iss(line);
 
 	std::getline(iss, directive, ' ');
-	std::getline(iss, arg, ' ');
-	size_t pos = arg.find(';');
+	std::getline(iss, ip_arg, ' ');
+	std::getline(iss, port_arg, ' ');
+	size_t pos = port_arg.find(';');
 	if (pos != std::string::npos)
-		arg.erase(pos, 1);
-	if (is_comment(arg) || (value = convert_port(arg.c_str())) == -1)
+		port_arg.erase(pos, 1);
+	if (is_comment(ip_arg) || std::count(ip_arg.begin(), ip_arg.end(), '.') != 3)
+		throw ConfigFile::InvalidSyntaxException(index, ConfigFile::INVALID_IP_VALUE);
+	this->_ip = ip_arg;
+	if (is_comment(port_arg) || (value = convert_port(port_arg.c_str())) == -1)
 		throw ConfigFile::InvalidSyntaxException(index, ConfigFile::INVALID_PORT_VALUE);
 	if (this->_port != -1)
 		throw ConfigFile::InvalidSyntaxException(index, ConfigFile::DUPLICATE_DIRECTIVE);
@@ -146,6 +153,11 @@ int ServerBlock::get_port(void) const
 	return (this->_port);
 }
 
+std::string ServerBlock::get_ip(void) const
+{
+	return (this->_ip);
+}
+
 std::vector<std::string> ServerBlock::get_server_name(void)
 {
 	return (this->_server_name);
@@ -172,7 +184,7 @@ void ServerBlock::print_location(void) const
 std::ostream& operator<<(std::ostream& output, ServerBlock& server)
 {
 	output << std::left << std::setw(25)<< "listen";
-	output << server.get_port() << '\n';
+	output << server.get_ip() << ' ' << server.get_port() << '\n';
 	output << std::left << std::setw(25) << "server_names";
 	for (int i = 0; i < static_cast<int>(server.get_server_name().size()); i++)
 		output << server.get_server_name()[i] << ' ';

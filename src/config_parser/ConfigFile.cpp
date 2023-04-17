@@ -11,7 +11,7 @@
 -> a locationblock cannot contain a servblock or another locationblock
 -> each block should have opening and closing brackets
 -> all directives should be ended with `;`
--> the `listen` directive requires a port number
+-> the `listen` directive requires an ip address and a port number
 -> each block should at least contain a `listen` and `server_name` directive
 -> duplicate directives are not allowed for `listen`, `server_name` and `root`
 -> For the other directives, the last occurence will be used
@@ -66,7 +66,7 @@ void ConfigFile::save_configurations(void)
 				i++;
 			Block::ConfigType dType = server.get_direc_type(this->_content[i]);
 			if (dType == Block::LISTEN_DIRECTIVE)
-				server.save_port(this->_content[i], i);
+				server.save_listen(this->_content[i], i);
 			else if (dType == Block::SERVER_NAME_DIRECTIVE)
 				server.save_server_name(this->_content[i], i);
 			else if (dType == Block::DIRECTIVE)
@@ -282,6 +282,9 @@ void ConfigFile::handle_syntax_exception(int index, ErrCode err)
 			break;
 		case INVALID_VALUES:
 			Logger::log(Logger::ERROR) << "invalid values at line " << index + 1;
+			break;
+		case INVALID_IP_VALUE:
+			Logger::log(Logger::ERROR) << "invalid ip address at line " << index + 1;
 			break;
 		case INVALID_PORT_VALUE:
 			Logger::log(Logger::ERROR) << "invalid port at line " << index + 1;

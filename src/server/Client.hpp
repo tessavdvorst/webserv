@@ -61,6 +61,7 @@ class Client {
 		void				read_header(int fd, bool is_cgi);
 		void				read_body(int fd, bool is_cgi);
 		int					get_fd(void) const;
+		std::string			get_ip(void);
 		int					get_listener(void) const;
 		ClientStatus		get_status(void) const;
 		std::vector<char>	get_header(void) const;
