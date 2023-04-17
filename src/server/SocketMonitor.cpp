@@ -80,23 +80,23 @@ void SocketMonitor::run(void)
 	signal(SIGPIPE, &do_nothing);
 	while (1)
 	{
-		FD_ZERO(&this->_read_fds);
-		FD_ZERO(&this->_write_fds);
-		this->_read_fds = this->_master;
-		this->_write_fds = this->_master;
-
-		if ((select(this->_fdMax + 1, &this->_read_fds, &this->_write_fds, NULL, &this->_zero_time)) == -1)
-			throw std::runtime_error("select call failed");
-
-		std::map<int, Server*>::iterator server_it = this->_servers.begin();
-		for (; server_it != this->_servers.end(); server_it++)
-		{
-			if (FD_ISSET(server_it->first, &this->_read_fds)) {
-				accept_connection(server_it->first);
-			}
-		}
-
 		try {
+			FD_ZERO(&this->_read_fds);
+			FD_ZERO(&this->_write_fds);
+			this->_read_fds = this->_master;
+			this->_write_fds = this->_master;
+
+			if ((select(this->_fdMax + 1, &this->_read_fds, &this->_write_fds, NULL, &this->_zero_time)) == -1)
+				throw std::runtime_error("select call failed");
+
+			std::map<int, Server*>::iterator server_it = this->_servers.begin();
+			for (; server_it != this->_servers.end(); server_it++)
+			{
+				if (FD_ISSET(server_it->first, &this->_read_fds)) {
+					accept_connection(server_it->first);
+				}
+			}
+
 			std::map<int, Client*>::iterator client_it = this->_clients.begin();
 			for (; client_it != this->_clients.end(); client_it++)
 			{
@@ -130,7 +130,7 @@ void SocketMonitor::run(void)
 			}
 		} catch (CloseFdException &e) {
 			close_and_remove(e.get_fd());
-		}
+		} catch (std::exception &e) { }
 	}
 }
 
@@ -142,7 +142,7 @@ void SocketMonitor::handle_cgi(Client *client)
 		if (client->get_response().get_request_type() == POST) {
 			add_fd(client->get_cgi()->get_input_write_fd());
 			client->update_status(READY_TO_READ_BODY);
-		} else 
+		} else
 			client->update_status(RUN_CGI);
 	}
 	else if (FD_ISSET(client->get_fd(), &this->_read_fds)

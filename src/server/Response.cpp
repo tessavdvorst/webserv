@@ -85,14 +85,35 @@ void Response::handle_request(void) {
 				throw Response::HTTPException("500");
 			else
 				this->_payload = "<!doctype html><html><head><title>Successfully removed</title></head><body><h1>200</h1>The file you requested has been successfully deleted.</body></html>";
-		} else
-			throw Response::HTTPException("404");
+		} else {
+			struct stat s;
+			if (stat(this->_index_url.c_str(), &s) == 0)
+				throw Response::HTTPException("500");
+			else {
+				if (errno == EACCES)
+					throw Response::HTTPException("403");
+				else if (errno == ENOENT || errno ==  ENOTDIR)
+					throw Response::HTTPException("404");
+				else
+					throw Response::HTTPException("500");
+			}
+		}
 	} else {
 		if (!this->_infile.good() && this->_request.get_directive("autoindex")[0] == "on")
 			serve_directory_listing();
-		else if (!this->_infile.good())
-			throw Response::HTTPException("404");
-		else {
+		else if (!this->_infile.good()) {
+			struct stat s;
+			if (stat(this->_index_url.c_str(), &s) == 0)
+				throw Response::HTTPException("500");
+			else {
+				if (errno == EACCES)
+					throw Response::HTTPException("403");
+				else if (errno == ENOENT || errno ==  ENOTDIR)
+					throw Response::HTTPException("404");
+				else
+					throw Response::HTTPException("500");
+			}
+		} else {
 			if (this->_request.get_directive("cgi_pass").size() == 2 && this->_request.get_index_url().find(this->_request.get_directive("cgi_pass")[0]) != std::string::npos && (this->_request.get_index_url().length() - this->_request.get_index_url().rfind(this->_request.get_directive("cgi_pass")[0])) == this->_request.get_directive("cgi_pass")[0].length())
 				throw Response::CGIDeferer();
 			this->_payload = get_file_data();
@@ -111,7 +132,6 @@ void Response::serve_config_error_page(Response::HTTPException &e)
 	this->_infile.open(this->_request.get_directive(std::string("error_page") + e.get_error_code())[0].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
 	if (!this->_infile.good())
 		throw Response::HTTPException(e.get_error_code(), false);
-	
 	std::string error_code = e.get_error_code();
 	this->_headers = "HTTP/1.1 " + error_code + " OK\r\ntransfer-encoding: chunked\r\n\r\n";
 	this->_payload = get_file_data();
@@ -119,6 +139,8 @@ void Response::serve_config_error_page(Response::HTTPException &e)
 
 std::string Response::get_error_msg(std::string error_code)
 {
+	if (error_code == "403")
+		return ("The requested URL was not allowed for this server.");
 	if (error_code == "404")
 		return ("The requested URL can't be found on this server.");
 	else if (error_code == "405")
@@ -137,7 +159,7 @@ void Response::handle_error_pages(Response::HTTPException &e)
 		throw std::exception();
 
 	std::string error_code = e.get_error_code();
-	if (!(error_code == "404" || error_code == "405" || error_code == "413"))
+	if (!(error_code == "403" || error_code == "404" || error_code == "405" || error_code == "413"))
 		error_code = "500";
 	std::string error_msg = get_error_msg(error_code);
 	this->_headers = "HTTP/1.1 " + error_code + " OK\r\ntransfer-encoding: chunked\r\n\r\n";
@@ -158,7 +180,17 @@ void Response::serve_directory_listing(void)
 		this->_payload += "</body></html>";
 		closedir(dir);
 	} else {
-		throw Response::HTTPException("404");
+		struct stat s;
+		if (stat(this->_index_url.c_str(), &s) == 0)
+			throw Response::HTTPException("500");
+		else {
+			if (errno == EACCES)
+				throw Response::HTTPException("403");
+			else if (errno == ENOENT || errno ==  ENOTDIR)
+				throw Response::HTTPException("404");
+			else
+				throw Response::HTTPException("500");
+		}
 	}
 }
 

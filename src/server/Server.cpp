@@ -32,9 +32,10 @@ Server::~Server()
 void Server::set_address(void)
 {
 	memset(&this->_serverAddress, 0, sizeof(this->_serverAddress));
+	inet_pton(AF_INET, this->_server_config[0]->get_ip().c_str(), &(this->_serverAddress.sin_addr));
 	this->_serverAddress.sin_family = AF_INET;
 	this->_serverAddress.sin_port = htons(this->_server_config[0]->get_port());
-	this->_serverAddress.sin_addr.s_addr = INADDR_ANY;
+//	this->_serverAddress.sin_addr.s_addr = INADDR_ANY;
 }
 
 // ============================ SOCKET METHODS =================================
@@ -56,7 +57,7 @@ void Server::listen(void)
 {
 	if (::listen(this->_listenFd, BACKLOG) < 0)
 		return (error_and_close("failed to listen on socket!", this->_listenFd));
-	
+
 	Logger::log(Logger::INFO) << "Listening on port " << this->_server_config[0]->get_port() << "...\n";
 }
 
