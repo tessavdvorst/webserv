@@ -2,14 +2,14 @@
 
 // ============================= CONSTRUCTOR ===================================
 
-LoggerStream::LoggerStream(Logger& logger, Logger::LogLevel level) : logger(logger), level(level), stream() {}
+LoggerStream::LoggerStream(Logger::LogLevel level): _level(level), _stream() {}
 
-LoggerStream::LoggerStream(const LoggerStream& that): logger(that.logger), level(that.level), stream(that.stream.str()) {}
+LoggerStream::LoggerStream(const LoggerStream& that): _level(that._level), _stream(that._stream.str()) {}
 
 // ============================= DESTRUCTOR ===================================
 
 LoggerStream::~LoggerStream() {
-	const std::string message = stream.str();
+	const std::string message = this->_stream.str();
 	if (!message.empty())
-		logger.print(level, message);
+		Logger::print(this->_level, message);
 }

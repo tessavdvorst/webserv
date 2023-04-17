@@ -96,7 +96,7 @@ void Request::parse_header(std::stringstream& in)
 	{
 		std::string key, value;
 		std::getline(in, line);
-		if (line.empty()) // body
+		if (line.empty())
 			break;
 		std::stringstream temp(line);
 		std::getline(temp, key, ' ');

@@ -121,7 +121,7 @@ bool ConfigFile::is_correct_end(const std::string& line, int index)
 	if (temp.back() != ';')
 		return (false);
 	if (std::count(temp.begin(), temp.end(), ';') > 1)
-		logger.log(Logger::WARN) << "directive at line " << index + 1 << " contains multiple semicolons";
+		Logger::log(Logger::WARN) << "directive at line " << index + 1 << " contains multiple semicolons";
 	return (true);
 }
 
@@ -266,28 +266,28 @@ void ConfigFile::handle_syntax_exception(int index, ErrCode err)
 {
 	switch(err) {
 		case INVALID_SYNTAX:
-			logger.log(Logger::ERROR) << "invalid syntax at line " << index + 1;
+			Logger::log(Logger::ERROR) << "invalid syntax at line " << index + 1;
 			break;
 		case PORT_NOT_DEFINED:
-			logger.log(Logger::ERROR) << "`listen` not defined";
+			Logger::log(Logger::ERROR) << "`listen` not defined";
 			break;
 		case SERVER_NAME_NOT_DEFINED:
-			logger.log(Logger::ERROR) << "`server_name` not defined";
+			Logger::log(Logger::ERROR) << "`server_name` not defined";
 			break;
 		case DUPLICATE_DIRECTIVE:
-			logger.log(Logger::ERROR) << "invalid duplicate directive at line " << index + 1;
+			Logger::log(Logger::ERROR) << "invalid duplicate directive at line " << index + 1;
 			break;
 		case UNKNOWN_DIRECTIVE:
-			logger.log(Logger::ERROR) << "unknown directive at line " << index + 1;
+			Logger::log(Logger::ERROR) << "unknown directive at line " << index + 1;
 			break;
 		case INVALID_VALUES:
-			logger.log(Logger::ERROR) << "invalid values at line " << index + 1;
+			Logger::log(Logger::ERROR) << "invalid values at line " << index + 1;
 			break;
 		case INVALID_PORT_VALUE:
-			logger.log(Logger::ERROR) << "invalid port at line " << index + 1;
+			Logger::log(Logger::ERROR) << "invalid port at line " << index + 1;
 			break;
 		case INVALID_SERVER_NAME:
-			logger.log(Logger::ERROR) << "invalid server name at line " << index + 1;
+			Logger::log(Logger::ERROR) << "invalid server name at line " << index + 1;
 			break;
 		default:
 			break;

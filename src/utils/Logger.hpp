@@ -18,10 +18,10 @@ class Logger {
 			ERROR
 		};
 
-		LoggerStream log(const LogLevel log);
-		void print(const LogLevel log, const std::string msg);
-		std::string LevelToString(const LogLevel level);
-		std::string getColorCode(const LogLevel level);
+		static LoggerStream log(const LogLevel log);
+		static void print(const LogLevel log, const std::string msg);
+		static std::string LevelToString(const LogLevel level);
+		static std::string getColorCode(const LogLevel level);
 };
 
 #endif

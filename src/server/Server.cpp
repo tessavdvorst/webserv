@@ -57,7 +57,7 @@ void Server::listen(void)
 	if (::listen(this->_listenFd, BACKLOG) < 0)
 		return (error_and_close("failed to listen on socket!", this->_listenFd));
 	
-	logger.log(Logger::INFO) << "Listening on port " << this->_server_config[0]->get_port() << "...\n";
+	Logger::log(Logger::INFO) << "Listening on port " << this->_server_config[0]->get_port() << "...\n";
 }
 
 int Server::accept(void)
