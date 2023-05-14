@@ -28,7 +28,11 @@ Webserv uses a configuration file to specify the server's settings and options. 
 Webserv includes comprehensive error handling, with customizable error pages and support for HTTP error codes.
 
 ## Setup
-To use Webserv, you must first download the source code from the repository. Once you have the source code, you can compile it using the provided Makefile.
+To use Webserv, you must first clone this repository.
+
+`$ git clone https://github.com/tessavdvorst/webserv.git`
+
+Once you have the source code, you can compile it using the provided Makefile.
 To compile the program, navigate to the directory containing the source code and type the following command:
 
 `$ make`
@@ -44,5 +48,5 @@ This will start the Webserv program and provide you with a server that listens o
 If no configuration file is specified, Webserv will use a default configuration.
 
 ## Contributors
-[![](https://github.com/PanoramixDeDruide.png?size=50)](https://github.com/PanoramixDeDruide)
-Robert Rinia
+[![](https://github.com/PanoramixDeDruide.png?size=30)](https://github.com/PanoramixDeDruide)
+\nRobert Rinia
