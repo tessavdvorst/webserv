@@ -49,4 +49,4 @@ If no configuration file is specified, Webserv will use a default configuration.
 
 ## Contributors
 [![](https://github.com/PanoramixDeDruide.png?size=30)](https://github.com/PanoramixDeDruide)
-\nRobert Rinia
+    Robert Rinia
