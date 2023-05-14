@@ -30,19 +30,19 @@ Webserv includes comprehensive error handling, with customizable error pages and
 ## Setup
 To use Webserv, you must first clone this repository.
 
-`$ git clone https://github.com/tessavdvorst/webserv.git`
+`git clone https://github.com/tessavdvorst/webserv.git`
 
 Once you have the source code, you can compile it using the provided Makefile.
-To compile the program, navigate to the directory containing the source code and type the following command:
+To compile the program type the following command:
 
-`$ make`
+`make`
 
 This will create an executable file called webserv in the same directory.
 
 ## Usage
 Once you have compiled the program, you can run it by typing the following command:
 
-`$ ./webserv [config-file]`
+`./webserv [config-file]`
 
 This will start the Webserv program and provide you with a server that listens on a specified port and IP address. The [config-file] argument is optional and specifies the location of the configuration file for the server. 
 If no configuration file is specified, Webserv will use a default configuration.
